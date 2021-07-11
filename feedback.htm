@@ -22,6 +22,8 @@
           </header>
           <section class="text-gray-600 body-font relative" id="contact">
             <div class="container px-5 py-24 mx-auto">
+              <form action="https://api.web3forms.com/submit" method="POST" id="form">
+
               <div class="flex flex-col text-center w-full mb-12">
                 <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Contact Us</h1>
                 <p class="lg:w-2/3 mx-auto leading-relaxed text-base">We will be happy to resolve your queries! Mail us and our team will be in touch with you shortly.</p>
@@ -54,6 +56,7 @@
                   </div>
                 </div>
               </div>
+              </form>
             </div>
           </section>
           <hr>
@@ -66,6 +69,53 @@
               </div>
             </footer>
           </section>
-
+          <script>
+            const form = document.getElementById('form');
+            const result = document.getElementById('result');
+            
+            form.addEventListener('submit', function(e) {
+                const formData = new FormData(form);
+                e.preventDefault();
+                var object = {};
+                formData.forEach((value, key) => {
+                    object[key] = value
+                });
+                var json = JSON.stringify(object);
+                result.innerHTML = "Please wait..."
+            
+                fetch('http://localhost:8081/contactform', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: json
+                    })
+                    .then(async (response) => {
+                        let json = await response.json();
+                        if (response.status == 200) {
+                            console.log(json.message);
+                            result.innerHTML = json.message;
+                             result.classList.remove('text-gray-500');
+                            result.classList.add('text-green-500');
+                        } else {
+                            console.log(response);
+                            result.innerHTML = json.message;
+                             result.classList.remove('text-gray-500');
+                             result.classList.add('text-red-500');
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        result.innerHTML = "Something went wrong!";
+                    })
+                    .then(function() {
+                        form.reset();
+                        setTimeout(() => {
+                            result.style.display = "none"; 
+                        }, 5000);
+                    });
+            })
+            </script>
 </body>
 </html>
