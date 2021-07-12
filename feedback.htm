@@ -86,6 +86,7 @@
                 result.innerHTML = "Please wait..."
                 //http://localhost:8081/contactform
                 fetch('https://api.funxion.io/contactform', {
+                        mode: "no-cors",
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
