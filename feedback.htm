@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" type="image/x-icon" href="chefs-hat.svg">
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <script src="https://www.funxion.io:9443/auth/js/keycloak.js"></script>
         <title>LocalChef</title>
     </head>
 
@@ -68,6 +69,53 @@
               </div>
             </footer>
           </section>
+          <script type="text/javascript">
+            const keycloak = Keycloak({
+                "realm": "quarkus",
+                "auth-server-url": "https://www.funxion.io:9443/auth",
+                "ssl-required": "external",
+                "resource": "frontend",
+                "public-client": true,
+                "confidential-port": 0,
+                "url": 'https://www.funxion.io:9443/auth',
+                "clientId": 'frontend',
+                "enable-cors": true
+            });
+            const loadData = () => {
+                console.log(keycloak.subject);
+                if (keycloak.idToken) {
+                    document.location.href = "?user="+keycloak.idTokenParsed.preferred_username;
+                    console.log('IDToken');
+                    console.log(keycloak.idTokenParsed.preferred_username);
+                    console.log(keycloak.idTokenParsed.email);
+                    console.log(keycloak.idTokenParsed.name);
+                    console.log(keycloak.idTokenParsed.given_name);
+                    console.log(keycloak.idTokenParsed.family_name);
+                } else {
+                    keycloak.loadUserProfile(function() {
+                        console.log('Account Service');
+                        console.log(keycloak.profile.username);
+                        console.log(keycloak.profile.email);
+                        console.log(keycloak.profile.firstName + ' ' + keycloak.profile.lastName);
+                        console.log(keycloak.profile.firstName);
+                        console.log(keycloak.profile.lastName);
+                    }, function() {
+                        console.log('Failed to retrieve user details. Please enable claims or account role');
+                    });
+                }
+            };
+            const loadFailure =  () => {
+                 console.log('Failed to load data.  Check console log');
+            };
+            const reloadData = () => {
+                keycloak.updateToken(10)
+                        .success(loadData)
+                        .error(() => {
+                            console.log('Failed to load data.  User is logged out.');
+                        });
+            }
+            keycloak.init({ onLoad: 'login-required' }).success(reloadData);
+            </script>
           <script>
             const form = document.getElementById('form');
             const result = document.getElementById('result');

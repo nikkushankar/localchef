@@ -6,11 +6,9 @@
 
         <title>Template • TodoMVC</title>
 
-        <link rel="stylesheet" href="node_modules/todomvc-common/base.css" />
-        <link rel="stylesheet" href="node_modules/todomvc-app-css/index.css" />
-        <link rel="stylesheet" href="css/app.css" />
         <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
+		<script src="https://www.funxion.io:9443/auth/js/keycloak.js"></script>
         <style>
             html,
 body {
@@ -536,7 +534,7 @@ html .clear-completed:active {
         </footer>
 
         <!-- Scripts here. Don't remove ↓ -->
-        <script src="node_modules/todomvc-common/base.js"></script>
+        
         <script>window.todoStore = {
             todos: JSON.parse(localStorage.getItem('todo-store') || '[]'),
         
@@ -640,5 +638,59 @@ html .clear-completed:active {
             };
         };
         </script>
+		          <script type="text/javascript">
+
+					let initOptions = {
+					  url: 'https://www.funxion.io:9443/auth' , realm: 'quarkus', clientId: 'frontend', onLoad: 'login-required'
+					}
+					
+					let keycloak = Keycloak(initOptions);
+					window.keycloak = keycloak;
+					keycloak.init({ onLoad: initOptions.onLoad }).then((auth) => {
+					  if (!auth) {
+						window.location.reload();
+					  }
+					
+					  let payload = {
+						idToken: keycloak.idToken,
+						accessToken: keycloak.token
+					  }
+					
+					  if ((keycloak.token && keycloak.idToken) != '' && (keycloak.idToken != '')) {
+						console.log("--> log: User has logged in: " + keycloak.subject);
+						console.log("--> log: TokenParsed: "+ JSON.stringify(keycloak.tokenParsed));
+						console.log("--> log: User name: " + keycloak.tokenParsed.preferred_username);
+						console.log("--> log: accessToken: " + payload.accessToken);
+						console.log("--> log: idToken: " + payload.idToken);
+						payload = {
+						  name: keycloak.tokenParsed.preferred_username
+						};
+					  }
+					  else {
+						payloadRefreshedTokens = {
+						  idToken: "",
+						  accessToken: ""
+						}
+					  }
+					}).catch(() => {
+					  console.log("-->log: Failed to authenticate");
+					});
+					
+					setInterval(() => {
+									window.keycloak.updateToken(70)
+										.then(refreshed => {
+											if (refreshed) {
+												console.info('Token refreshed' + refreshed);
+											} else {
+												console.warn('Token not refreshed, valid for '
+													+ Math.round(window.keycloak.tokenParsed.exp + window.keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+											}
+										})
+										.catch(error => console.error(error));
+								}, 6000)
+					
+					
+							</script>
+					
     </body>
 </html>
