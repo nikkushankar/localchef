@@ -69,53 +69,6 @@
               </div>
             </footer>
           </section>
-          <script type="text/javascript">
-            const keycloak = Keycloak({
-                "realm": "quarkus",
-                "auth-server-url": "https://www.funxion.io:9443/auth",
-                "ssl-required": "external",
-                "resource": "frontend",
-                "public-client": true,
-                "confidential-port": 0,
-                "url": 'https://www.funxion.io:9443/auth',
-                "clientId": 'frontend',
-                "enable-cors": true
-            });
-            const loadData = () => {
-                console.log(keycloak.subject);
-                if (keycloak.idToken) {
-                    document.location.href = "?user="+keycloak.idTokenParsed.preferred_username;
-                    console.log('IDToken');
-                    console.log(keycloak.idTokenParsed.preferred_username);
-                    console.log(keycloak.idTokenParsed.email);
-                    console.log(keycloak.idTokenParsed.name);
-                    console.log(keycloak.idTokenParsed.given_name);
-                    console.log(keycloak.idTokenParsed.family_name);
-                } else {
-                    keycloak.loadUserProfile(function() {
-                        console.log('Account Service');
-                        console.log(keycloak.profile.username);
-                        console.log(keycloak.profile.email);
-                        console.log(keycloak.profile.firstName + ' ' + keycloak.profile.lastName);
-                        console.log(keycloak.profile.firstName);
-                        console.log(keycloak.profile.lastName);
-                    }, function() {
-                        console.log('Failed to retrieve user details. Please enable claims or account role');
-                    });
-                }
-            };
-            const loadFailure =  () => {
-                 console.log('Failed to load data.  Check console log');
-            };
-            const reloadData = () => {
-                keycloak.updateToken(10)
-                        .success(loadData)
-                        .error(() => {
-                            console.log('Failed to load data.  User is logged out.');
-                        });
-            }
-            keycloak.init({ onLoad: 'login-required' }).success(reloadData);
-            </script>
           <script>
             const form = document.getElementById('form');
             const result = document.getElementById('result');
@@ -129,8 +82,8 @@
                 });
                 var json = JSON.stringify(object);
                 result.innerHTML = "Please wait..."
-            
-                fetch('http://localhost:8081/contactform', {
+                //http://localhost:8081/contactform
+                fetch('https://api.funxion.io/contactform', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -164,5 +117,58 @@
                     });
             })
             </script>
+		          <script type="text/javascript">
+
+                let initOptions = {
+                  url: 'https://www.funxion.io:9443/auth' , realm: 'quarkus', clientId: 'frontend', onLoad: 'login-required'
+                }
+                
+                let keycloak = Keycloak(initOptions);
+                window.keycloak = keycloak;
+                keycloak.init({ onLoad: initOptions.onLoad }).then((auth) => {
+                  if (!auth) {
+                  window.location.reload();
+                  }
+                
+                  let payload = {
+                  idToken: keycloak.idToken,
+                  accessToken: keycloak.token
+                  }
+                
+                  if ((keycloak.token && keycloak.idToken) != '' && (keycloak.idToken != '')) {
+                  console.log("--> log: User has logged in: " + keycloak.subject);
+                  console.log("--> log: TokenParsed: "+ JSON.stringify(keycloak.tokenParsed));
+                  console.log("--> log: User name: " + keycloak.tokenParsed.preferred_username);
+                  console.log("--> log: accessToken: " + payload.accessToken);
+                  console.log("--> log: idToken: " + payload.idToken);
+                  payload = {
+                    name: keycloak.tokenParsed.preferred_username
+                  };
+                  }
+                  else {
+                  payloadRefreshedTokens = {
+                    idToken: "",
+                    accessToken: ""
+                  }
+                  }
+                }).catch(() => {
+                  console.log("-->log: Failed to authenticate");
+                });
+                
+                setInterval(() => {
+                        window.keycloak.updateToken(70)
+                          .then(refreshed => {
+                            if (refreshed) {
+                              console.info('Token refreshed' + refreshed);
+                            } else {
+                              console.warn('Token not refreshed, valid for '
+                                + Math.round(window.keycloak.tokenParsed.exp + window.keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+                            }
+                          })
+                          .catch(error => console.error(error));
+                      }, 6000)
+                
+                
+                    </script>
 </body>
 </html>
