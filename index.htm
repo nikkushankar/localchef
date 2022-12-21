@@ -1,279 +1,294 @@
 <!DOCTYPE html>
-<html class="h-100">
-  <head>
-    <meta charset="UTF-8" />
-    <title>SPA SDK Sample</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" type="text/css" href="/css/main.css" />
-    <link
-      rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai-sublime.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css"
-      integrity="sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css"
-      integrity="sha384-4aon80D8rXCGx9ayDt85LbyUHeMWd3UiBaWliBlJ53yzm9hqN21A+o1pqoyK04h+"
-      crossorigin="anonymous"
-    />
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/x-icon" href="chefs-hat.svg">
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <title>LocalChef</title>
+    </head>
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.auth0.com/js/auth0-samples-theme/1.0/css/auth0-theme.min.css"
-    />
-  </head>
-
-  <body class="h-100">
-    <div id="app" class="h-100 d-flex flex-column">
-      <div class="nav-container">
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
-          <div class="container">
-            <div class="navbar-brand logo"></div>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                  <a href="/" class="nav-link route-link">Home</a>
-                </li>
-              </ul>
-              <ul class="navbar-nav d-none d-md-block">
-                <!-- Login button: show if NOT authenticated -->
-                <li class="nav-item auth-invisible">
-                  <button
-                    id="qsLoginBtn"
-                    onclick="login()"
-                    class="btn btn-primary btn-margin auth-invisible hidden"
-                  >
-                    Log in
-                  </button>
-                </li>
-                <!-- / Login button -->
-
-                <!-- Fullsize dropdown: show if authenticated -->
-                <li class="nav-item dropdown auth-visible hidden">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="profileDropDown"
-                    data-toggle="dropdown"
-                  >
-                    <!-- Profile image should be set to the profile picture from the id token -->
-                    <img
-                      alt="Profile picture"
-                      class="nav-user-profile profile-image rounded-circle"
-                      width="50"
-                    />
-                  </a>
-                  <div class="dropdown-menu">
-                    <!-- Show the user's full name from the id token here -->
-                    <div class="dropdown-header nav-user-name user-name"></div>
-                    <a
-                      href="/profile"
-                      class="dropdown-item dropdown-profile route-link"
-                    >
-                      <i class="fas fa-user mr-3"></i> Profile
-                    </a>
-                    <a
-                      href="#"
-                      class="dropdown-item"
-                      id="qsLogoutBtn"
-                      onclick="logout()"
-                    >
-                      <i class="fas fa-power-off mr-3"></i> Log out
-                    </a>
-                  </div>
-                </li>
-                <!-- /Fullsize dropdown -->
-              </ul>
-
-              <!-- Responsive login button: show if NOT authenticated -->
-              <ul class="navbar-nav d-md-none auth-invisible">
-                <button
-                  class="btn btn-primary btn-block auth-invisible hidden"
-                  id="qsLoginBtn"
-                  onclick="login()"
-                >
-                  Log in
-                </button>
-              </ul>
-              <!-- /Responsive login button -->
-
-              <!-- Responsive profile dropdown: show if authenticated -->
-              <ul
-                class="navbar-nav d-md-none auth-visible hidden justify-content-between"
-                style="min-height: 125px"
-              >
-                <li class="nav-item">
-                  <span class="user-info">
-                    <!-- Profile image should be set to the profile picture from the id token -->
-                    <img
-                      alt="Profile picture"
-                      class="nav-user-profile d-inline-block profile-image rounded-circle mr-3"
-                      width="50"
-                    />
-                    <!-- Show the user's full name from the id token here -->
-                    <h6 class="d-inline-block nav-user-name user-name"></h6>
-                  </span>
-                </li>
-                <li>
-                  <i class="fas fa-user mr-3"></i>
-                  <a href="/profile" class="route-link">Profile</a>
-                </li>
-
-                <li>
-                  <i class="fas fa-power-off mr-3"></i>
-                  <a href="#" id="qsLogoutBtn" onclick="logout()">Log out</a>
-                </li>
-              </ul>
+    <body>
+        <header class="text-gray-600 body-font">
+            <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+              <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-green-500 rounded-full" viewBox="0 0 24 24">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+                <span class="ml-3 text-xl"><a href="index.htm">LocalChef</a></span>
+              </a>
+              <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+                <a class="mr-5 hover:text-gray-900" href="register.htm">Register</a>
+              </nav>
             </div>
+            
+          </header>
+
+          <hr>
+
+          <section class="text-gray-600 body-font">
+            <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+              <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+                <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Get Amazing home cooked food from your Local Chefs!
+                  <br class="hidden lg:inline-block">Promote Small Business
+                </h1>
+                
+                <div class="flex justify-center">
+                  <button class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"><a href="patron.htm">Login as Patron</a></button>
+                  <button class="ml-4 inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"><a href="chef.htm">Login as Chef</a></button>
+                </div>
+              </div>
+              <div class="lg:max-w-l.1g lg:w-full md:w-1.2g">
+                <img class="object-cover object-center rounded" alt="hero" src="https://images.unsplash.com/photo-1617355057919-2aa713486c9c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=fill&w=1650&q=320">
+              </div>
+            </div>
+          </section>
+
+          <hr>
+          <section class="box-border relative w-full font-sans leading-6 text-gray-700 bg-white border-0 border-gray-200 border-solid">
+            <div class="box-border flex flex-col items-center px-8 py-20 mx-auto leading-6 border-solid max-w-7xl xl:px-16 md:items-stretch md:justify-center md:py-24">
+                <div class="relative pb-10">
+                    <h2 class="w-full m-0 font-sans text-4xl font-black leading-loose tracking-wide text-center text-gray-700 border-0 border-gray-200 sm:text-5xl">
+                        Why Choose Us
+                    </h2>
+                    <p class="w-full max-w-xl mx-0 mx-auto mt-4 mb-0 font-sans text-sm font-medium leading-relaxed text-center text-gray-400 border-0 border-gray-200 lg:text-lg md:text-base">
+                        Check out our set of awesome features and tools. We are the industry leaders in providing quality tools, trusted and used by over 1,200 companies. We kind'of rock!
+                    </p>
+                </div>
+        
+                <div class="z-10 grid gap-5 md:grid-cols-6 lg:grid-cols-9">
+                    <!-- Feature 1 -->
+                    <div class="col-span-3 font-sans text-gray-700 bg-gray-50 rounded-3xl">
+                        <div class="box-border flex flex-col items-start h-full px-2 py-8 mx-4 leading-6 text-center border-solid sm:flex-row sm:items-start sm:text-left">
+                            <div class="flex-shrink-0 p-3 font-sans text-gray-700 border border-gray-200 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="leading-6 text-center text-gray-700 align-middle stroke-current w-7 h-7" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M0 0h24v24H0z" stroke="none"></path>
+                                    <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3M12 12l8-4.5M12 12v9M12 12L4 7.5M16 5.25l-8 4.5"></path></svg>
+                            </div>
+                            <div class="mt-4 font-sans text-left text-gray-700 border-0 border-gray-200 sm:mt-2 sm:ml-4">
+                                <h6 class="box-border text-2xl font-bold leading-none tracking-wide text-left border-solid">Support Home Business</h6>
+                                <p class="box-border mx-0 mt-1 mb-0 font-medium leading-loose text-gray-400 border-solid sm:mt-4">
+                                    Take advantage of our unlimited projects for your tasks and automated workflow.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="col-span-3 font-sans text-gray-700 bg-gray-50 rounded-3xl">
+                        <div class="box-border flex flex-col items-start h-full px-2 py-8 mx-4 leading-6 text-center border-solid sm:flex-row sm:items-start sm:text-left">
+                            <div class="flex-shrink-0 p-3 font-sans text-gray-700 border border-gray-200 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="leading-6 text-center text-gray-700 align-middle stroke-current w-7 h-7" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M0 0h24v24H0z" stroke="none"></path>
+                                    <path d="M7 12l5 5L22 7M2 12l5 5m5-5l5-5"></path></svg>
+        
+                            </div>
+                            <div class="mt-4 font-sans text-left text-gray-700 border-0 border-gray-200 sm:mt-2 sm:ml-4">
+                                <h6 class="box-border text-2xl font-bold leading-none tracking-wide text-left border-solid">Increase Customer Base</h6>
+                                <p class="box-border mx-0 mt-1 mb-0 font-medium leading-loose text-gray-400 border-solid sm:mt-4">
+                                    Unlimited tasks that perform some of your most important applications functionality.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="col-span-3 font-sans text-gray-700 bg-gray-50 rounded-3xl">
+                        <div class="box-border flex flex-col items-start h-full px-2 py-8 mx-4 leading-6 text-center border-solid sm:flex-row sm:items-start sm:text-left">
+                            <div class="flex-shrink-0 p-3 font-sans text-gray-700 border border-gray-200 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="leading-6 text-center text-gray-700 align-middle stroke-current w-7 h-7" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M0 0h24v24H0z" stroke="none"></path>
+                                    <path d="M9 4.55a8 8 0 016 14.9M15 15v5h5M5.63 7.16v.01M4.06 11v.01M4.63 15.1v.01M7.16 18.37v.01M11 19.94v.01"></path></svg>
+                            </div>
+                            <div class="mt-4 font-sans text-left text-gray-700 border-0 border-gray-200 sm:mt-2 sm:ml-4">
+                                <h6 class="box-border text-2xl font-bold leading-none tracking-wide text-left border-solid">Easy Management</h6>
+                                <p class="box-border mx-0 mt-1 mb-0 font-medium leading-loose text-gray-400 border-solid sm:mt-4">
+                                    Set it, and forget it. Our automated tools will allow you to automate your workflow.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="col-span-3 font-sans text-gray-700 bg-gray-50 rounded-3xl">
+                        <div class="box-border flex flex-col items-start h-full px-2 py-8 mx-4 leading-6 text-center border-solid sm:flex-row sm:items-start sm:text-left">
+                            <div class="flex-shrink-0 p-3 font-sans text-gray-700 border border-gray-200 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="leading-6 text-center text-gray-700 align-middle stroke-current w-7 h-7" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M0 0h24v24H0z" stroke="none"></path>
+                                    <path d="M3 12h3M12 3v3M7.8 7.8L5.6 5.6M16.2 7.8l2.2-2.2M7.8 16.2l-2.2 2.2M12 12l9 3-4 2-2 4-3-9"></path></svg>
+                            </div>
+                            <div class="mt-4 font-sans text-left text-gray-700 border-0 border-gray-200 sm:mt-2 sm:ml-4">
+                                <h6 class="box-border text-2xl font-bold leading-none tracking-wide text-left border-solid">Build Community</h6>
+                                <p class="box-border mx-0 mt-1 mb-0 font-medium leading-loose text-gray-400 border-solid sm:mt-4">
+                                    We've built one of the simplest tools to integrate into your current system.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature 5 -->
+                    <div class="col-span-3 font-sans text-gray-700 bg-gray-50 rounded-3xl">
+                        <div class="box-border flex flex-col items-start h-full px-2 py-8 mx-4 leading-6 text-center border-solid sm:flex-row sm:items-start sm:text-left">
+                            <div class="flex-shrink-0 p-3 font-sans text-gray-700 border border-gray-200 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="leading-6 text-center text-gray-700 align-middle stroke-current w-7 h-7" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M0 0h24v24H0z" stroke="none"></path>
+                                    <path d="M13 3v7h6l-8 11v-7H5l8-11"></path></svg>
+                            </div>
+                            <div class="mt-4 font-sans text-left text-gray-700 border-0 border-gray-200 sm:mt-2 sm:ml-4">
+                                <h6 class="box-border text-2xl font-bold leading-none tracking-wide text-left border-solid">Fast</h6>
+                                <p class="box-border mx-0 mt-1 mb-0 font-medium leading-loose text-gray-400 border-solid sm:mt-4">
+                                    We have the fastest response times than any other service in our industry.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature 6 -->
+                    <div class="col-span-3 font-sans text-gray-700 border-0 bg-gray-50 rounded-3xl">
+                        <div class="box-border flex flex-col items-start h-full px-2 py-8 mx-4 leading-6 text-center border-solid sm:flex-row sm:items-start sm:text-left">
+                            <div class="flex-shrink-0 p-3 font-sans text-gray-700 border border-gray-200 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="leading-6 text-center text-gray-700 align-middle stroke-current w-7 h-7" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M0 0h24v24H0z" stroke="none"></path>
+                                    <rect x="3" y="4" width="18" height="8" rx="3"></rect>
+                                    <rect x="3" y="12" width="18" height="8" rx="3"></rect>
+                                    <path d="M7 8v.01M7 16v.01"></path></svg>
+        
+                            </div>
+                            <div class="mt-4 font-sans text-left text-gray-700 border-0 border-gray-200 sm:mt-2 sm:ml-4">
+                                <h6 class="box-border text-2xl font-bold leading-none tracking-wide text-left border-solid">Economical</h6>
+                                <p class="box-border mx-0 mt-1 mb-0 font-medium leading-loose text-gray-400 border-solid sm:mt-4">
+                                    We pride ourselves in our up-time metrics. We focus a lot of our energy on being reliable.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        </section>
+
+          <hr>
+          <!--
+          <section class="text-gray-600 body-font" id="stats">
+            <div class="relative pb-10 mt-16">
+              
+              <h2 class="w-full m-0 font-sans text-4xl font-black leading-loose tracking-wide text-center text-gray-700 border-0 border-gray-200 sm:text-5xl">
+                User Base
+              </h2>
+              <p class="w-full max-w-xl mx-0 mx-auto mt-4 mb-0 font-sans text-sm font-medium leading-relaxed text-center text-gray-400 border-0 border-gray-200 lg:text-lg md:text-base">
+                All the people who are using this platform and love it!
+              </p>
           </div>
-        </nav>
+            
+            <div class="container px-5 py-24 mx-auto mb-20">
+              <div class="flex flex-wrap -m-4 text-center">
+                <div class="p-4 sm:w-1/2 w-1/2">
+                  <h2 class="title-font font-medium sm:text-4xl text-3xl text-gray-900">150</h2>
+                  <p class="leading-relaxed">Chefs</p>
+                </div>
+                <div class="p-4 sm:w-1/2 w-1/2">
+                  <h2 class="title-font font-medium sm:text-4xl text-3xl text-gray-900">1.8K</h2>
+                  <p class="leading-relaxed">Patrons</p>
+                </div>
+                
+              </div>
+            </div>
+          </section>
+          <hr>
+        -->
+          <footer class="text-gray-600 body-font">
+            
+<section class="bg-white">
+  <div class="px-8 py-12 mx-auto text-gray-600 bg-white xl:pb-24 max-w-7xl xl:px-12">
+      <div class="grid gap-6 mx-auto md:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
+          <div>
+              <h5 class="text-xl font-bold text-gray-700">Product</h5>
+              <nav class="mt-4">
+                  <ul class="space-y-2">
+                      <li>
+                          <a href="pricing.htm" class="text-base hover:text-gray-500">Pricing</a>
+                      </li>
+                      <li>
+                          <a href="#" class="text-base hover:text-gray-500">Integrations</a>
+                      </li>
+                      <li>
+                          <a href="#" class="text-base hover:text-gray-500">Documentation</a>
+                      </li>
+                  </ul>
+              </nav>
+          </div>
+          <div>
+              <h5 class="text-xl font-bold text-gray-700">About</h5>
+              <nav class="mt-4">
+                  <ul class="space-y-2">
+                      <li>
+                          <a href="#" class="text-base hover:text-gray-500">Our Story</a>
+                      </li>
+                      <li>
+                          <a href="#" class="text-base hover:text-gray-500">Our Team</a>
+                      </li>
+                      <li>
+                        <a href="#" class="text-base hover:text-gray-500">Our Blog</a>
+                    </li>
+                      <li>
+                          <a href="#" class="text-base hover:text-gray-500">Work With Us</a>
+                      </li>
+                  </ul>
+              </nav>
+          </div>
+          <div>
+              <h5 class="text-xl font-bold text-gray-700">Contact</h5>
+              <nav class="mt-4">
+                  <ul class="space-y-2">
+                      <li>
+                          <a href="#" class="text-base hover:text-gray-500">Press</a>
+                      </li>
+                      <li>
+                          <a href="#" class="text-base hover:text-gray-500">Partners</a>
+                      </li>
+                      <li>
+                        <a href="feedback.htm" class="text-base hover:text-gray-500">Feedback</a>
+                    </li>
+                  </ul>
+              </nav>
+          </div>
       </div>
+      <div class="flex flex-col items-center justify-between mx-auto mt-8 space-y-4 md:space-y-0 md:flex-row lg:mt-16">
+          <nav class="flex flex-wrap justify-center space-x-6">
+              <a href="#" class="mb-2 text-sm hover:text-gray-700">Privacy Policy</a>
+              <a href="#" class="mb-2 text-sm hover:text-gray-700">Disclaimers</a>
+              <a href="terms.htm" class="mb-2 text-sm hover:text-gray-700">Terms and Conditions</a>
+              <a href="#" class="mb-2 text-sm hover:text-gray-700">Legal</a>
+          </nav>
+          <nav class="flex items-center space-x-2">
+              <a href="#" class="text-gray-500 hover:text-gray-600">
+                  <span class="sr-only">Facebook</span>
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
+                  </svg>
+              </a>
 
-      <div id="main-content" class="container mt-5 flex-grow-1">
-        <div id="content-home" class="page">
-          <div class="text-center hero">
-            <img
-              class="mb-3 app-logo"
-              src="/images/logo.png"
-              alt="JavaScript logo"
-              width="75"
-            />
-            <h1 class="mb-4">JavaScript Sample Project</h1>
+              <a href="#" class="text-gray-500 hover:text-gray-600">
+                  <span class="sr-only">Instagram</span>
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"></path>
+                  </svg>
+              </a>
 
-            <p class="lead">
-              This is a sample application that demonstrates an authentication
-              flow for an SPA, using plain JavaScript
-            </p>
-          </div>
-
-          <div class="next-steps">
-            <h2 class="my-5 text-center">What can I do next?</h2>
-
-            <div class="row">
-              <div class="col-md-5 mb-4">
-                <h6 class="mb-3">
-                  <a href="https://auth0.com/docs/connections">
-                    <i class="fas fa-link"></i> Configure other identity
-                    providers
-                  </a>
-                </h6>
-                <p>
-                  Auth0 supports social providers as Facebook, Twitter,
-                  Instagram and 100+, Enterprise providers as Microsoft Office
-                  365, Google Apps, Azure, and more. You can also use any OAuth2
-                  Authorization Server.
-                </p>
-              </div>
-
-              <div class="col-md"></div>
-
-              <div class="col-md-5 mb-4">
-                <h6 class="mb-3">
-                  <a href="https://auth0.com/docs/multifactor-authentication">
-                    <i class="fas fa-link"></i> Enable Multifactor
-                    Authentication
-                  </a>
-                </h6>
-                <p>
-                  Add an extra layer of security by enabling Multi-factor
-                  Authentication, requiring your users to provide more than one
-                  piece of identifying information. Push notifications,
-                  authenticator apps, SMS, and DUO Security are supported.
-                </p>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-5 mb-4">
-                <h6 class="mb-3">
-                  <a href="https://auth0.com/docs/anomaly-detection">
-                    <i class="fas fa-link"></i> Anomaly Detection
-                  </a>
-                </h6>
-                <p>
-                  Auth0 can detect anomalies and stop malicious attempts to
-                  access your application. Anomaly detection can alert you and
-                  your users of suspicious activity, as well as block further
-                  login attempts.
-                </p>
-              </div>
-
-              <div class="col-md"></div>
-
-              <div class="col-md-5 mb-4">
-                <h6 class="mb-3">
-                  <a href="https://auth0.com/docs/rules">
-                    <i class="fas fa-link"></i> Learn About Rules
-                  </a>
-                </h6>
-                <p>
-                  Rules are JavaScript functions that execute when a user
-                  authenticates to your application. They run once the
-                  authentication process is complete, and you can use them to
-                  customize and extend Auth0's capabilities.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="page" id="content-profile">
-          <div class="container">
-            <div class="row align-items-center profile-header">
-              <div class="col-md-2">
-                <img
-                  alt="User's profile picture"
-                  class="rounded-circle img-fluid profile-image mb-3 mb-md-0"
-                />
-              </div>
-              <div class="col-md">
-                <h2 class="user-name"></h2>
-                <p class="lead text-muted user-email"></p>
-              </div>
-            </div>
-
-            <div class="row">
-              <pre class="rounded">
-                <code id="profile-data" class="json"></code></pre>
-            </div>
-          </div>
-        </div>
+              <a href="#" class="text-gray-500 hover:text-gray-600">
+                  <span class="sr-only">Twitter</span>
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+                  </svg>
+              </a>
+          </nav>
       </div>
-
-      <footer class="bg-light text-center p-5">
-        <div class="logo"></div>
-        <p>
-          Sample project provided by
-          <a href="https://auth0.com">Auth0</a>
-        </p>
-      </footer>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.13/auth0-spa-js.production.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/app.js"></script>
-  </body>
+  </div>
+            <div class="bg-gray-100">
+              <div class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
+                <p class="text-gray-500 text-sm text-center sm:text-left">©2021 LocalChef.me </p>
+                <span class="sm:ml-auto sm:mt-0 mt-2 sm:w-auto w-full sm:text-left text-center text-gray-500 text-sm">All Rights Reserved</span>
+              </div>
+            </div>
+          </footer>
+        </section>
+        <script src="https://cdn.auth0.com/js/auth0-spa-js/1.13/auth0-spa-js.production.js"></script>
+        <script src="js/ui.js"></script>
+        <script src="js/app.js"></script>
+    
+      </body>
 </html>
